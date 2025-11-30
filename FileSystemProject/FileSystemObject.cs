@@ -1,4 +1,6 @@
 namespace FileSystemProject;
+using System;
+using System.IO;
 
 public abstract class FileSystemObject
 {
@@ -15,7 +17,7 @@ public abstract class FileSystemObject
         Console.WriteLine($"Constructor Date of Creation: {DateOfCreation}");
         Size = size;
         Console.WriteLine($"Constructor Size: {Size}");
-        FullPath = fullPath;
+        FullPath = Path.Combine(fullPath, name);
         Console.WriteLine($"Constructor Full Path: {FullPath}");
     }
 
@@ -23,14 +25,16 @@ public abstract class FileSystemObject
     {
         Console.Write($"Name: {Name}\nDate of Creation: {DateOfCreation}\nFile Size: {Size}\nFull Path: {FullPath}");
     }
-    
+
+    public abstract void FSCreate();
+
 }
 
-public class File : FileSystemObject
+public class FileObject : FileSystemObject
 {
     private string Content { get; set; }
     
-    public File(string name, int size, string fullPath, string content) : base(name, size, fullPath)
+    public FileObject(string name, int size, string fullPath, string content) : base(name, size, fullPath)
     {
         Content = content;
     }
@@ -39,6 +43,11 @@ public class File : FileSystemObject
     {
         base.ShowInfo();
         Console.Write($"\nFile contents: {Content}");
+    }
+
+    public override void FSCreate()
+    {
+        File.WriteAllText(FullPath, Content);
     }
 }
 
@@ -73,6 +82,26 @@ public class Folder : FileSystemObject
         {
             Contents[objectInput.Name] = objectInput;
             Console.WriteLine($"Added {objectInput}");
+        }
+    }
+
+    public bool RemoveObject(string objectName)
+    {
+        return Contents.Remove(objectName);
+    }
+    
+    public override void FSCreate()
+    {
+        if (!(Directory.Exists(FullPath)))
+        {
+            Directory.CreateDirectory(FullPath);
+        }
+        else
+        {
+            foreach (var currFile in Contents.Values)
+            {
+                currFile.FSCreate();
+            }
         }
     }
 }

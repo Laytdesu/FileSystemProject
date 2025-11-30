@@ -1,14 +1,12 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using FileSystemProject;
-using FSFile = FileSystemProject.File;
+using FSFile = FileSystemProject.FileObject;
 using FSFolder = FileSystemProject.Folder;
 
-FSFile testFile = new FSFile("Secret files", 69, "C://Users//User//Documents//Example", "Lalalalala");
-FSFolder testFolder = new FSFolder("Example", 69, "C://Users//User//Documents");
+FileSystemManager FSMan = new FileSystemManager("/Users/radionintouch/Documents", "Example");
 
-
-testFile.ShowInfo();
-testFolder.CreateObject(testFile);
-testFolder.ShowInfo();
-testFolder.CreateObject(testFile);
-testFolder.ShowInfo();
+var Docs = FSMan.CreateFolder(FSMan.RootPath, "Docs");
+var Images = FSMan.CreateFolder(FSMan.RootPath, "Images");
+FSMan.CreateFile(Docs, "Secrets.txt", "Sicret");
+FSMan.CreateFile(Images, "ARealImage.png", "");
+FSMan.CreatePhysical();
