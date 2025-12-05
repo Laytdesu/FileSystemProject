@@ -29,4 +29,25 @@ public class FileSystemManager
     {
         RootPath.FSCreate();
     }
+
+    public bool DeleteObject(Folder folderIn, string nameIn)
+    {
+        return folderIn.RemoveObject(nameIn);
+    }
+
+    public bool MoveObject(Folder sourceFolder, Folder targetFolder, string nameIn)
+    {
+        if (!(sourceFolder.Contents.ContainsKey(nameIn)))
+        {
+            return false;
+        }
+        else
+        {
+            var sourceObject = sourceFolder.Contents[nameIn];
+            sourceFolder.Contents.Remove(nameIn);
+            sourceObject.FullPath = Path.Combine(targetFolder.FullPath, sourceObject.Name);
+            targetFolder.CreateObject(sourceObject);
+            return true;
+        }
+    }
 }

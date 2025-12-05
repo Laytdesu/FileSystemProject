@@ -9,4 +9,10 @@ var Docs = FSMan.CreateFolder(FSMan.RootPath, "Docs");
 var Images = FSMan.CreateFolder(FSMan.RootPath, "Images");
 FSMan.CreateFile(Docs, "Secrets.txt", "Sicret");
 FSMan.CreateFile(Images, "ARealImage.png", "");
+FSMan.CreateFile(Images, "IShouldBeInImages.png", "Ball");
+FSMan.CreateFile(Docs, "IShouldNotExist.png", "Ball");
+
+FSMan.MoveObject(Images, Docs, "IShouldBeInImages.png");
+FSMan.DeleteObject(Docs, "IShouldNotExist.png");
+
 FSMan.CreatePhysical();
